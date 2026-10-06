@@ -1,0 +1,23 @@
+<p class="results-meta" data-results-meta>
+  <%= pluralize(total, "prompt") %>
+</p>
+
+<% if prompts.any? %>
+  <div class="grid" data-grid>
+    <%= render partial: "prompts/card", collection: prompts, as: :prompt %>
+  </div>
+
+  <% if next_page %>
+    <div class="load-more" data-load-more-wrap>
+      <%= link_to "Load more", url_for(request.query_parameters.merge(page: next_page, only_path: true)),
+            class: "btn btn--ghost", data: { load_more: true } %>
+    </div>
+  <% end %>
+<% else %>
+  <div class="empty">
+    <%= render "shared/icon", name: "search" %>
+    <h2>No prompts found</h2>
+    <p>Try a different keyword or browse another category.</p>
+    <%= link_to "Clear filters", root_path, class: "btn btn--ghost", data: { clear_filters: true } %>
+  </div>
+<% end %>

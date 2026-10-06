@@ -1,0 +1,19 @@
+<% content_for :title, "Saved prompts" %>
+
+<section class="container page">
+  <header class="page__header">
+    <h1 class="page__title">Saved prompts</h1>
+    <p class="page__subtitle">Your personal collection — synced to your account.</p>
+  </header>
+
+  <div class="grid" data-grid data-remove-on-unsave>
+    <%= render partial: "prompts/card", collection: @prompts, as: :prompt %>
+  </div>
+
+  <div class="empty" data-saved-empty <%= "hidden" if @prompts.any? %>>
+    <%= render "shared/icon", name: "bookmark" %>
+    <h2>Nothing saved yet</h2>
+    <p>Tap the bookmark icon on any prompt to keep it here.</p>
+    <%= link_to "Browse prompts", root_path, class: "btn btn--primary" %>
+  </div>
+</section>

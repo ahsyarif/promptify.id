@@ -1,0 +1,36 @@
+<% content_for :title, "Sign up" %>
+
+<section class="auth">
+  <div class="auth__card">
+    <h1 class="auth__title">Create your account</h1>
+    <p class="auth__subtitle">Save prompts and access them from any device.</p>
+
+    <%= form_with model: @user, url: registration_path, class: "form" do |form| %>
+      <% if @user.errors.any? %>
+        <div class="form__errors" role="alert">
+          <ul>
+            <% @user.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="field">
+        <%= form.label :email_address, "Email" %>
+        <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "you@example.com" %>
+      </div>
+      <div class="field">
+        <%= form.label :password %>
+        <%= form.password_field :password, required: true, autocomplete: "new-password", placeholder: "At least 8 characters", minlength: 8, maxlength: 72 %>
+      </div>
+      <div class="field">
+        <%= form.label :password_confirmation, "Confirm password" %>
+        <%= form.password_field :password_confirmation, required: true, autocomplete: "new-password", placeholder: "Repeat password", maxlength: 72 %>
+      </div>
+      <%= form.submit "Create account", class: "btn btn--primary btn--block" %>
+    <% end %>
+
+    <p class="auth__switch">Already have an account? <%= link_to "Sign in", new_session_path %></p>
+  </div>
+</section>

@@ -1,0 +1,19 @@
+<%# locals: (prompt:, label: false) %>
+<% if current_user %>
+  <% saved = current_user.bookmarked?(prompt) %>
+  <%# A real form so it still works without JS; JS intercepts the submit and uses fetch. %>
+  <%= form_with url: prompt_bookmark_path(prompt), method: (saved ? :delete : :post),
+        class: "bookmark-form", data: { bookmark_form: true, prompt_id: prompt.id } do %>
+    <button type="submit" class="<%= label ? "btn btn--ghost bookmark-btn" : "icon-btn bookmark-btn" %>"
+            aria-pressed="<%= saved %>" aria-label="<%= saved ? "Remove from saved" : "Save prompt" %>">
+      <%= render "shared/icon", name: "bookmark" %>
+      <% if label %><span data-bookmark-label><%= saved ? "Saved" : "Save" %></span><% end %>
+    </button>
+  <% end %>
+<% else %>
+  <%= link_to new_session_path, class: (label ? "btn btn--ghost bookmark-btn" : "icon-btn bookmark-btn"),
+        "aria-label": "Sign in to save", title: "Sign in to save" do %>
+    <%= render "shared/icon", name: "bookmark" %>
+    <% if label %><span>Save</span><% end %>
+  <% end %>
+<% end %>

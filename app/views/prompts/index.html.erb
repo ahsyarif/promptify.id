@@ -1,0 +1,52 @@
+<% content_for :title, @category&.name || (@query.present? ? "Search: #{@query}" : nil) %>
+
+<section class="hero">
+  <div class="container hero__inner">
+    <h1 class="hero__title">
+      <% if @category %>
+        <%= @category.name %>
+      <% else %>
+        Prompts that paint.
+      <% end %>
+    </h1>
+    <p class="hero__subtitle">
+      <%= @category&.description.presence || "A curated library of AI image prompts. Search, filter by category, copy in one click, and save the ones you love." %>
+    </p>
+
+    <%= form_with url: root_path, method: :get, class: "search", role: "search", data: { search_form: true } do |f| %>
+      <%= hidden_field_tag :category, @category&.slug, data: { search_category: true } %>
+      <label for="q" class="sr-only">Search prompts</label>
+      <span class="search__icon"><%= render "shared/icon", name: "search" %></span>
+      <%= f.search_field :q, value: @query, id: "q", class: "search__input",
+            placeholder: "Search prompts, styles, models…", autocomplete: "off",
+            data: { search_input: true } %>
+      <kbd class="search__kbd" aria-hidden="true">/</kbd>
+    <% end %>
+  </div>
+</section>
+
+<section class="container library">
+  <div class="toolbar">
+    <nav class="chips" aria-label="Categories" data-category-chips>
+      <%= link_to "All", root_path(q: @query.presence, sort: (@sort if @sort != "newest")),
+            class: ["chip", ("is-active" unless @category)], data: { category: "" } %>
+      <% @categories.each do |category| %>
+        <%= link_to category_path(category.slug, q: @query.presence, sort: (@sort if @sort != "newest")),
+              class: ["chip", ("is-active" if @category == category)], data: { category: category.slug } do %>
+          <%= category.name %> <span class="chip__count"><%= category.prompts_count %></span>
+        <% end %>
+      <% end %>
+    </nav>
+
+    <label class="sort">
+      <span class="sr-only">Sort by</span>
+      <%= select_tag :sort,
+            options_for_select([ [ "Newest", "newest" ], [ "Most saved", "popular" ], [ "A–Z", "title" ] ], @sort),
+            class: "sort__select", form: nil, data: { search_sort: true } %>
+    </label>
+  </div>
+
+  <div data-results aria-live="polite">
+    <%= render "prompts/results", prompts: @prompts, total: @total, next_page: @next_page %>
+  </div>
+</section>

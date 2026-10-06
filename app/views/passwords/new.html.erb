@@ -1,0 +1,18 @@
+<% content_for :title, "Reset password" %>
+
+<section class="auth">
+  <div class="auth__card">
+    <h1 class="auth__title">Forgot your password?</h1>
+    <p class="auth__subtitle">We'll email you a link to reset it.</p>
+
+    <%= form_with url: passwords_path, class: "form" do |form| %>
+      <div class="field">
+        <%= form.label :email_address, "Email" %>
+        <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", placeholder: "you@example.com", value: params[:email_address] %>
+      </div>
+      <%= form.submit "Email reset instructions", class: "btn btn--primary btn--block" %>
+    <% end %>
+
+    <p class="auth__switch"><%= link_to "Back to sign in", new_session_path %></p>
+  </div>
+</section>

@@ -1,0 +1,77 @@
+<% content_for :title, @prompt.title %>
+
+<div class="container detail">
+  <%= link_to root_path, class: "back-link", data: { back_link: true } do %>
+    <%= render "shared/icon", name: "arrow-left" %> All prompts
+  <% end %>
+
+  <div class="detail__layout">
+    <figure class="detail__media">
+      <% if @prompt.image.attached? %>
+        <button type="button" class="detail__zoom" data-lightbox-open aria-label="View full size image">
+          <%= image_tag @prompt.image, alt: "Example output for: #{@prompt.title}", data: { lightbox_src: url_for(@prompt.image) } %>
+          <span class="detail__zoom-hint"><%= render "shared/icon", name: "expand" %></span>
+        </button>
+      <% else %>
+        <span class="card__placeholder card__placeholder--lg"><%= render "shared/icon", name: "image" %></span>
+      <% end %>
+    </figure>
+
+    <div class="detail__info">
+      <%= link_to @prompt.category.name, category_path(@prompt.category.slug), class: "tag" %>
+      <h1 class="detail__title"><%= @prompt.title %></h1>
+
+      <div class="prompt-box">
+        <div class="prompt-box__head">
+          <h2>Prompt</h2>
+          <button type="button" class="btn btn--sm btn--ghost" data-copy="<%= @prompt.body %>">
+            <%= render "shared/icon", name: "copy" %> <span>Copy</span>
+          </button>
+        </div>
+        <p class="prompt-box__text"><%= @prompt.body %></p>
+      </div>
+
+      <% if @prompt.negative_prompt.present? %>
+        <div class="prompt-box prompt-box--muted">
+          <div class="prompt-box__head">
+            <h2>Negative prompt</h2>
+            <button type="button" class="btn btn--sm btn--ghost" data-copy="<%= @prompt.negative_prompt %>">
+              <%= render "shared/icon", name: "copy" %> <span>Copy</span>
+            </button>
+          </div>
+          <p class="prompt-box__text"><%= @prompt.negative_prompt %></p>
+        </div>
+      <% end %>
+
+      <dl class="specs">
+        <% if @prompt.ai_model.present? %>
+          <div><dt>Model</dt><dd><%= @prompt.ai_model %></dd></div>
+        <% end %>
+        <% if @prompt.aspect_ratio.present? %>
+          <div><dt>Aspect ratio</dt><dd><%= @prompt.aspect_ratio %></dd></div>
+        <% end %>
+        <div><dt>Saves</dt><dd data-bookmarks-count="<%= @prompt.id %>"><%= @prompt.bookmarks_count %></dd></div>
+      </dl>
+
+      <div class="detail__actions">
+        <%= render "prompts/bookmark_button", prompt: @prompt, label: true %>
+      </div>
+    </div>
+  </div>
+
+  <% if @related.any? %>
+    <section class="related">
+      <h2 class="section-title">More in <%= @prompt.category.name %></h2>
+      <div class="grid">
+        <%= render partial: "prompts/card", collection: @related, as: :prompt %>
+      </div>
+    </section>
+  <% end %>
+</div>
+
+<dialog class="lightbox" data-lightbox>
+  <button type="button" class="lightbox__close icon-btn" data-lightbox-close aria-label="Close">
+    <%= render "shared/icon", name: "x" %>
+  </button>
+  <img alt="" data-lightbox-img>
+</dialog>

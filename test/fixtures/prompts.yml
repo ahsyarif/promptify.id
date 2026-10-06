@@ -1,0 +1,19 @@
+one:
+  title: Golden Hour Portrait
+  slug: golden-hour-portrait
+  body: Close-up portrait in golden hour
+  negative_prompt: blurry
+  ai_model: Midjourney v6.1
+  aspect_ratio: 4:5
+  category: portraits
+  bookmarks_count: 1
+
+two:
+  title: Alpine Lake
+  slug: alpine-lake
+  body: Beautiful alpine lake reflection
+  negative_prompt: noisy
+  ai_model: Flux.1 Pro
+  aspect_ratio: 16:9
+  category: landscapes
+  bookmarks_count: 0

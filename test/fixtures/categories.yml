@@ -1,0 +1,11 @@
+portraits:
+  name: Portraits
+  slug: portraits
+  description: Human and character portraits
+  position: 1
+
+landscapes:
+  name: Landscapes
+  slug: landscapes
+  description: Natural landscapes
+  position: 2

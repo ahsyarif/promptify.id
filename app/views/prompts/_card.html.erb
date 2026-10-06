@@ -1,0 +1,25 @@
+<article class="card" data-card data-prompt-id="<%= prompt.id %>">
+  <%= link_to prompt_path(prompt), class: "card__media", tabindex: -1, "aria-hidden": true do %>
+    <% if prompt.image.attached? %>
+      <%= image_tag prompt.image, alt: "", loading: "lazy", decoding: "async" %>
+    <% else %>
+      <span class="card__placeholder"><%= render "shared/icon", name: "image" %></span>
+    <% end %>
+  <% end %>
+
+  <div class="card__body">
+    <div class="card__meta">
+      <%= link_to prompt.category.name, category_path(prompt.category.slug), class: "tag" %>
+      <% if prompt.ai_model.present? %><span class="card__model"><%= prompt.ai_model %></span><% end %>
+    </div>
+    <h3 class="card__title"><%= link_to prompt.title, prompt_path(prompt) %></h3>
+    <p class="card__excerpt"><%= truncate(prompt.body, length: 110, separator: " ") %></p>
+
+    <div class="card__actions">
+      <button type="button" class="icon-btn" data-copy="<%= prompt.body %>" aria-label="Copy prompt">
+        <%= render "shared/icon", name: "copy" %>
+      </button>
+      <%= render "prompts/bookmark_button", prompt: prompt %>
+    </div>
+  </div>
+</article>
