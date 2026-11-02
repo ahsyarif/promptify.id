@@ -43,7 +43,7 @@ class Prompt < ApplicationRecord
 
   def to_param = slug
 
-  def related(limit: 3)
+  def related(limit: 5)
     category.prompts.where.not(id: id).with_image.sorted_by("popular").limit(limit)
   end
 

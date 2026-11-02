@@ -1,5 +1,5 @@
 class PromptsController < ApplicationController
-  PER_PAGE = 12
+  PER_PAGE = 15
 
   allow_unauthenticated_access
 

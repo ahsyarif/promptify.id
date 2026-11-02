@@ -42,19 +42,19 @@
 
         <nav id="site-nav" class="site-nav" data-nav>
           <%= link_to "Browse", root_path, class: ["site-nav__link", ("is-active" if controller_name == "prompts")] %>
-          <% if current_user&.member? %>
-            <span class="tag tag--premium">Member</span>
-          <% else %>
-            <%= link_to "Go Pro", membership_path, class: ["site-nav__link", ("is-active" if controller_name.in?(%w[memberships payments]))] %>
-          <% end %>
           <% if current_user %>
+            <% if current_user.member? %>
+              <span class="tag tag--premium">Member</span>
+            <% else %>
+              <%= link_to "Go Premium", membership_path, class: ["site-nav__link", ("is-active" if controller_name.in?(%w[memberships payments]))] %>
+            <% end %>
             <%= link_to bookmarks_path, class: ["site-nav__link", ("is-active" if controller_name == "bookmarks")] do %>
               Saved <span class="badge" data-saved-count><%= current_user.bookmarks.size %></span>
             <% end %>
             <%= button_to "Sign out", session_path, method: :delete, class: "site-nav__link site-nav__button" %>
           <% else %>
             <%= link_to "Sign in", new_session_path, class: "site-nav__link" %>
-            <%= link_to "Sign up", new_registration_path, class: "btn btn--primary btn--sm" %>
+            <%= link_to "Go Premium", membership_path, class: "btn btn--primary btn--sm" %>
           <% end %>
         </nav>
       </div>
