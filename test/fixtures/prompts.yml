@@ -17,3 +17,13 @@ two:
   aspect_ratio: 16:9
   category: landscapes
   bookmarks_count: 0
+
+premium:
+  title: Neon Noir Portrait
+  slug: neon-noir-portrait
+  body: Secret neon noir portrait recipe
+  ai_model: Flux.1 Pro
+  aspect_ratio: 4:5
+  category: portraits
+  premium: true
+  bookmarks_count: 0

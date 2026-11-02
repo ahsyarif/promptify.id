@@ -1,0 +1,5 @@
+pending:
+  user: one
+  order_id: promptify-test-pending
+  amount: 49000
+  status: pending

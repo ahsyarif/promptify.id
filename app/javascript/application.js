@@ -3,6 +3,7 @@ import { initSearch } from "lib/search"
 import { initBookmarks } from "lib/bookmarks"
 import { initClipboard } from "lib/clipboard"
 import { initNav, initFlash, initLightbox, initBackLink } from "lib/ui"
+import { initPayment } from "lib/payment"
 
 // Modules are deferred, so the DOM is already parsed here.
 initNav()
@@ -12,3 +13,4 @@ initBookmarks()
 initClipboard()
 initLightbox()
 initBackLink()
+initPayment()

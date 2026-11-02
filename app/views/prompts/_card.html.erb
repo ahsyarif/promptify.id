@@ -10,15 +10,26 @@
   <div class="card__body">
     <div class="card__meta">
       <%= link_to prompt.category.name, category_path(prompt.category.slug), class: "tag" %>
+      <% if prompt.premium? %><span class="tag tag--premium">Premium</span><% end %>
       <% if prompt.ai_model.present? %><span class="card__model"><%= prompt.ai_model %></span><% end %>
     </div>
     <h3 class="card__title"><%= link_to prompt.title, prompt_path(prompt) %></h3>
-    <p class="card__excerpt"><%= truncate(prompt.body, length: 110, separator: " ") %></p>
+    <% if unlocked?(prompt) %>
+      <p class="card__excerpt"><%= truncate(prompt.body, length: 110, separator: " ") %></p>
+    <% else %>
+      <p class="card__excerpt">Members-only prompt. Unlock all prompts with one QRIS payment.</p>
+    <% end %>
 
     <div class="card__actions">
-      <button type="button" class="icon-btn" data-copy="<%= prompt.body %>" aria-label="Copy prompt">
-        <%= render "shared/icon", name: "copy" %>
-      </button>
+      <% if unlocked?(prompt) %>
+        <button type="button" class="icon-btn" data-copy="<%= prompt.body %>" aria-label="Copy prompt">
+          <%= render "shared/icon", name: "copy" %>
+        </button>
+      <% else %>
+        <%= link_to membership_path, class: "icon-btn", "aria-label": "Unlock premium prompt" do %>
+          <%= render "shared/icon", name: "lock" %>
+        <% end %>
+      <% end %>
       <%= render "prompts/bookmark_button", prompt: prompt %>
     </div>
   </div>

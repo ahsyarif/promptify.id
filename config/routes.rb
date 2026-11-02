@@ -6,6 +6,9 @@ Rails.application.routes.draw do
   end
   get "categories/:category", to: "prompts#index", as: :category
   get "saved", to: "bookmarks#index", as: :bookmarks
+  resource :membership, only: :show
+  resources :payments, only: %i[ create show ]
+  post "midtrans/notifications", to: "midtrans_notifications#create", as: :midtrans_notifications
 
   resource :session
   resource :registration, only: %i[ new create ]

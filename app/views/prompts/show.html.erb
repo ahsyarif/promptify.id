@@ -19,27 +19,37 @@
 
     <div class="detail__info">
       <%= link_to @prompt.category.name, category_path(@prompt.category.slug), class: "tag" %>
+      <% if @prompt.premium? %><span class="tag tag--premium">Premium</span><% end %>
       <h1 class="detail__title"><%= @prompt.title %></h1>
 
-      <div class="prompt-box">
-        <div class="prompt-box__head">
-          <h2>Prompt</h2>
-          <button type="button" class="btn btn--sm btn--ghost" data-copy="<%= @prompt.body %>">
-            <%= render "shared/icon", name: "copy" %> <span>Copy</span>
-          </button>
-        </div>
-        <p class="prompt-box__text"><%= @prompt.body %></p>
-      </div>
-
-      <% if @prompt.negative_prompt.present? %>
-        <div class="prompt-box prompt-box--muted">
+      <% if unlocked?(@prompt) %>
+        <div class="prompt-box">
           <div class="prompt-box__head">
-            <h2>Negative prompt</h2>
-            <button type="button" class="btn btn--sm btn--ghost" data-copy="<%= @prompt.negative_prompt %>">
+            <h2>Prompt</h2>
+            <button type="button" class="btn btn--sm btn--ghost" data-copy="<%= @prompt.body %>">
               <%= render "shared/icon", name: "copy" %> <span>Copy</span>
             </button>
           </div>
-          <p class="prompt-box__text"><%= @prompt.negative_prompt %></p>
+          <p class="prompt-box__text"><%= @prompt.body %></p>
+        </div>
+
+        <% if @prompt.negative_prompt.present? %>
+          <div class="prompt-box prompt-box--muted">
+            <div class="prompt-box__head">
+              <h2>Negative prompt</h2>
+              <button type="button" class="btn btn--sm btn--ghost" data-copy="<%= @prompt.negative_prompt %>">
+                <%= render "shared/icon", name: "copy" %> <span>Copy</span>
+              </button>
+            </div>
+            <p class="prompt-box__text"><%= @prompt.negative_prompt %></p>
+          </div>
+        <% end %>
+      <% else %>
+        <div class="locked">
+          <%= render "shared/icon", name: "lock" %>
+          <h2>Premium prompt</h2>
+          <p>Unlock this and every other premium prompt with a one-time <%= idr(Payment::PRICE) %> QRIS payment.</p>
+          <%= link_to "Unlock all prompts", membership_path, class: "btn btn--primary" %>
         </div>
       <% end %>
 

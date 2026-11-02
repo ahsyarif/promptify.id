@@ -7,3 +7,8 @@ one:
 two:
   email_address: two@example.com
   password_digest: <%= password_digest %>
+
+member:
+  email_address: member@example.com
+  password_digest: <%= password_digest %>
+  member_since: <%= 1.day.ago.to_fs(:db) %>

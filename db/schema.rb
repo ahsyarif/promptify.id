@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_10_06_115716) do
+ActiveRecord::Schema[8.1].define(version: 2026_11_02_092128) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
@@ -60,6 +60,20 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_06_115716) do
     t.index ["slug"], name: "index_categories_on_slug", unique: true
   end
 
+  create_table "payments", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "order_id", null: false
+    t.integer "amount", null: false
+    t.string "status", default: "pending", null: false
+    t.string "qr_url"
+    t.string "midtrans_transaction_id"
+    t.datetime "paid_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["order_id"], name: "index_payments_on_order_id", unique: true
+    t.index ["user_id"], name: "index_payments_on_user_id"
+  end
+
   create_table "prompts", force: :cascade do |t|
     t.string "title", null: false
     t.string "slug", null: false
@@ -71,6 +85,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_06_115716) do
     t.integer "bookmarks_count", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "premium", default: false, null: false
     t.index ["bookmarks_count"], name: "index_prompts_on_bookmarks_count"
     t.index ["category_id"], name: "index_prompts_on_category_id"
     t.index ["created_at"], name: "index_prompts_on_created_at"
@@ -91,6 +106,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_06_115716) do
     t.string "password_digest", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "member_since"
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 
@@ -98,6 +114,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_10_06_115716) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "bookmarks", "prompts"
   add_foreign_key "bookmarks", "users"
+  add_foreign_key "payments", "users"
   add_foreign_key "prompts", "categories"
   add_foreign_key "sessions", "users"
 end

@@ -44,4 +44,26 @@ class PromptsControllerTest < ActionDispatch::IntegrationTest
     assert_select ".prompt-box__text", text: @prompt.body
     assert_select "[data-copy]", minimum: 1
   end
+
+  test "guest sees premium prompt locked" do
+    premium = prompts(:premium)
+    get prompt_url(premium)
+    assert_response :success
+    assert_select ".locked"
+    assert_not_includes response.body, premium.body
+  end
+
+  test "member sees premium prompt text" do
+    sign_in_as users(:member)
+    premium = prompts(:premium)
+    get prompt_url(premium)
+    assert_response :success
+    assert_select ".prompt-box__text", text: premium.body
+  end
+
+  test "guest index does not leak premium prompt body" do
+    get prompts_url
+    assert_response :success
+    assert_not_includes response.body, prompts(:premium).body
+  end
 end

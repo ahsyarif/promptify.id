@@ -195,6 +195,8 @@ prompts_data = [
 
 images_dir = Rails.root.join("db/seeds/images")
 
+premium_slugs = %w[neon-noir-portrait brutalist-sanctuary cyberpunk-market mars-colony-sunrise luxury-perfume-shot liquid-chrome-waves]
+
 prompts_data.each do |p_attrs|
   category = categories[p_attrs[:category_slug]]
   prompt = Prompt.find_or_initialize_by(slug: p_attrs[:slug])
@@ -204,7 +206,8 @@ prompts_data.each do |p_attrs|
     negative_prompt: p_attrs[:negative_prompt],
     ai_model: p_attrs[:ai_model],
     aspect_ratio: p_attrs[:aspect_ratio],
-    category: category
+    category: category,
+    premium: premium_slugs.include?(p_attrs[:slug])
   )
   prompt.save!
 
@@ -238,4 +241,12 @@ end
 
 puts "✓ Demo user seeded: #{demo_user.email_address} (password: password123)"
 puts "✓ Bookmarks for demo user: #{demo_user.bookmarks.count}"
+
+member_user = User.find_or_create_by!(email_address: "member@promptify.test") do |u|
+  u.password = "password123"
+  u.password_confirmation = "password123"
+  u.member_since = Time.current
+end
+
+puts "✓ Member user seeded: #{member_user.email_address} (password: password123)"
 puts "== Done seeding! =="

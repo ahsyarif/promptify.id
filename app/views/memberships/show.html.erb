@@ -1,0 +1,16 @@
+<% content_for :title, "Membership" %>
+
+<section class="auth">
+  <div class="auth__card">
+    <% if current_user.member? %>
+      <h1 class="auth__title">You're a member</h1>
+      <p class="auth__subtitle">Lifetime access since <%= l current_user.member_since.to_date, format: :long %>. Every prompt is unlocked.</p>
+      <%= link_to "Browse prompts", root_path, class: "btn btn--primary btn--block" %>
+    <% else %>
+      <h1 class="auth__title">Unlock every prompt</h1>
+      <p class="auth__subtitle">One payment, lifetime access to all <%= @premium_count %> premium prompts and every one we add later.</p>
+      <p class="price"><%= idr(Payment::PRICE) %></p>
+      <%= button_to "Pay with QRIS", payments_path, class: "btn btn--primary btn--block" %>
+    <% end %>
+  </div>
+</section>

@@ -1,0 +1,19 @@
+<% content_for :title, "Pay with QRIS" %>
+
+<section class="auth">
+  <div class="auth__card">
+    <% if @payment.pending? && @payment.qr_url.present? %>
+      <div data-payment data-payment-url="<%= payment_path(@payment, format: :json) %>">
+        <h1 class="auth__title">Scan to pay</h1>
+        <p class="auth__subtitle">Open any QRIS app — GoPay, OVO, DANA, ShopeePay or your mobile banking — and scan this code.</p>
+        <%= image_tag @payment.qr_url, alt: "QRIS code for #{idr(@payment.amount)}", class: "qr" %>
+        <p class="price"><%= idr(@payment.amount) %></p>
+        <p class="payment-status" role="status">Waiting for payment… this page updates automatically.</p>
+      </div>
+    <% else %>
+      <h1 class="auth__title">Payment not completed</h1>
+      <p class="auth__subtitle">This QR code expired or the payment failed.</p>
+      <%= button_to "Generate a new QR code", payments_path, class: "btn btn--primary btn--block" %>
+    <% end %>
+  </div>
+</section>
